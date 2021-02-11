@@ -1,4 +1,4 @@
-package com.revature.forum.util;
+package com.revature.util;
 
 import java.io.FileReader;
 import java.io.IOException;

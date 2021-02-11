@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>0.0.1</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>khORMe</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <db_properties>
+        <url>jdbc:postgresql://database-00.czqzbaumhc6o.us-east-2.rds.amazonaws.com:5432/forum_db</url>
+        <admin>Beej</admin>
+        <pw>Phr34k5h0w</pw>
+    </db_properties>
+
+
+    <tables>
+        <table>
+            <name>com.revature.forum.models.Board</name>
+        </table>
+        <table>
+            <name>com.revature.forum.models.Thread</name>
+        </table>
+        <table>
+            <name>com.revature.forum.models.Post</name>
+        </table>
+        <table>
+            <name>com.revature.forum.models.Message</name>
+        </table>
+        <table>
+            <name>com.revature.forum.models.AppUser</name>
+        </table>
+    </tables>
+
+
+</project>

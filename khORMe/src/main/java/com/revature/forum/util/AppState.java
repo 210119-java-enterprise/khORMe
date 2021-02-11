@@ -5,6 +5,7 @@ import com.revature.forum.screens.HomeScreen;
 import com.revature.forum.screens.LoginScreen;
 import com.revature.forum.screens.RegistrationScreen;
 import com.revature.forum.services.UserService;
+import com.revature.util.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

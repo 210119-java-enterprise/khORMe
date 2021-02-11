@@ -1,6 +1,6 @@
-package com.revature.model;
+package com.revature.util;
 
-import com.revature.forum.util.ConnectionFactory;
+import com.revature.util.ConnectionFactory;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -45,4 +45,9 @@ public class AccessDB {
 
         } catch (SQLException e) { e.printStackTrace(); }
     }
+
+    public void mapResults(){
+
+    }
+
 }

@@ -3,18 +3,18 @@ package com.revature.forum.models;
 import com.revature.annotations.*;
 
 
-@Table
-public class Boards {
+@Table(name="Boardz")
+public class Board {
 
-    @PrimaryKey
+    @PrimaryKey(name="idz")
     public int id;
-    @Column
+    @Column(name="namez")
     public String name;
-    @Column
+    @Column(name="desc")
     public String description;
 
 
-    public Boards(int id, String name, String desc) {
+    public Board(int id, String name, String desc) {
         this.id = id;
         this.name = name;
         this.description = desc;

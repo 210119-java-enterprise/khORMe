@@ -1,4 +1,4 @@
-package com.revature.forum.util;
+package com.revature.util;
 
 import com.revature.forum.models.AppUser;
 import com.revature.forum.models.UserRole;

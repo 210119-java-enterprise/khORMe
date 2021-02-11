@@ -1,8 +1,8 @@
 package com.revature.forum.models;
 
-/**
- * Unused as of now, saving for a later, potential implementation
- */
+import com.revature.annotations.Table;
+
+@Table(name="user_roles")
 public enum UserRole {
     ADMIN, BASIC_USER, MODERATOR
 }

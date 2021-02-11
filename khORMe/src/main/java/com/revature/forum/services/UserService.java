@@ -6,8 +6,8 @@ import com.revature.exceptions.ResourcePersistenceException;
 import com.revature.forum.models.AppUser;
 import com.revature.forum.models.UserRole;
 import com.revature.forum.repos.UserRepository;
-import com.revature.forum.util.ConnectionFactory;
-import com.revature.forum.util.Session;
+import com.revature.util.ConnectionFactory;
+import com.revature.util.Session;
 
 import static com.revature.forum.ForumDriver.app;
 

@@ -1,13 +1,7 @@
 package com.revature.forum.screens;
 
-import com.revature.forum.models.Boards;
-import com.revature.forum.util.ConnectionFactory;
-import com.revature.model.AccessDB;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.revature.forum.models.Board;
+import com.revature.util.AccessDB;
 
 import static com.revature.forum.ForumDriver.app;
 
@@ -33,7 +27,7 @@ public class HomeScreen extends Screen {
         System.out.println("_______________________________________________________________________________________");
         System.out.println("        --BOARDS--                                              [L]ogin  [R]egister\n");
 
-        db.selectStar(Boards.class);
+        db.selectStar(Board.class);
 //        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 //            String sql = "select name, description " +
 //                    "from boards b; ";

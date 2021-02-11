@@ -1,24 +1,41 @@
 package com.revature.forum.models;
 
+import com.revature.annotations.Column;
+import com.revature.annotations.ForeignKey;
+import com.revature.annotations.PrimaryKey;
+import com.revature.annotations.Table;
+
+import java.lang.annotation.Retention;
 import java.util.Objects;
 
 /**
  * Object that contains all available data pertaining to a user
  */
+@Table(name="user")
 public class AppUser {
-
+    @PrimaryKey(name="id")
     private int id;
+    @Column(name="first_name")
     private String firstName;
+    @Column(name="last_name")
     private String lastName;
+    @Column(name="username")
     private String username;
+    @Column(name="pw")
     private String password;
+    @Column(name="registration_date")
     private String registrationDate;
+    @Column(name="is_active")
+    private boolean isActive;
+    @Column(name="email")
+    private String email;
+    @ForeignKey(name="roleId")
+    private int roleId;
     private String address;
     private String city;
     private String state;
     private String zip;
     private String phone;
-    //private LinkedList <Integer> accounts=new LinkedList<>();
     private UserRole userRole;
 
     public AppUser() {

@@ -1,7 +1,7 @@
 package com.revature.forum.repos;
 
 import com.revature.forum.models.AppUser;
-import com.revature.forum.util.ConnectionFactory;
+import com.revature.util.ConnectionFactory;
 
 
 import java.sql.*;

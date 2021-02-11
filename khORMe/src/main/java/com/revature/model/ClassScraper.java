@@ -1,7 +1,6 @@
 package com.revature.model;
 
-import java.util.Set;
-import java.lang.reflect.*;
+import com.revature.util.AccessDB;
 
 public class ClassScraper {
 
@@ -18,7 +17,7 @@ public class ClassScraper {
         try {
 
             // Load Class at runtime
-            Class<?> cls = Class.forName("com.revature.forum.models.Boards");
+            Class<?> cls = Class.forName("com.revature.forum.models.Board");
             AccessDB accessDB=new AccessDB();
             //accessDB.selectStar(cls);
             //accessDB.listPublicFields(cls);
