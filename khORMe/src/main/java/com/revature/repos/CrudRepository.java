@@ -1,10 +1,10 @@
-package com.revature.forum.repos;
+package com.revature.repos;
 
 
 import java.util.LinkedList;
 
 /**
- * interface to be implemented by user repository
+ *
  * @param <T>
  */
 public interface CrudRepository<T> {

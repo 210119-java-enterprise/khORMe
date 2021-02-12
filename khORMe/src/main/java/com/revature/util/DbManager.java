@@ -3,20 +3,45 @@ package com.revature.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableManager {
-    private ArrayList<Metamodel> tables;
 
-    public TableManager(){
+public class DbManager {
+    private String dbUrl;
+    private String dbUsername;
+    private String dbPassword;
+    private ArrayList<Metamodel<Class<?>>> tables=new ArrayList<>();
+
+    private DbManager() {
         super();
-        tables=new ArrayList<>();
     }
+
+    /** eager singleton */
+    private static DbManager db = new DbManager();
+    public static DbManager getInstance() {
+        return db;
+    }
+
+
+    static {
+
+    }
+
+
+
+
+
 
     public void add(Metamodel mm){
         tables.add(mm);
     }
 
 
-    public void get(){}
+    public ArrayList<Metamodel<Class<?>>> getAll() {
+        return (tables == null) ? null : tables;
+    }
+
+    public Metamodel<Class<?>> get(int i) {
+        return tables.get(i);
+    }
 
 
     public void print(int i){

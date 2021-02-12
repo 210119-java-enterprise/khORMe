@@ -1,6 +1,7 @@
 package com.revature.util;
 
-import com.revature.util.ConnectionFactory;
+import com.revature.services.BasicConnectionPool;
+import com.revature.services.ConnectionFactory;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -16,9 +17,9 @@ public class AccessDB {
 
 
     public void selectStar(Class<?> cls){
-
+        //try(Connection conn = BasicConnectionPool.){
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select*from "+cls.getSimpleName()+";";
+            String sql = "select*from "+cls.getSimpleName()+"s;";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();

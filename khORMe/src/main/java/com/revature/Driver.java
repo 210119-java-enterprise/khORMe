@@ -10,12 +10,8 @@ import com.revature.util.*;
 public class Driver {
     public static void main(String[] args) {
         Initializer init =new Initializer();
-        init.initialize();
-//        TableManager tableManager= new TableManager();
-//
-//        Metamodel<Boards> userMetamodel = Metamodel.of(Boards.class);
-//        tableManager.add(userMetamodel);
-//        tableManager.print(0);
+        init.initialize("src/main/resources/khORM.xml");
+
 
     }
 }

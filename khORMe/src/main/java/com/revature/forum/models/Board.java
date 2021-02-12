@@ -3,14 +3,14 @@ package com.revature.forum.models;
 import com.revature.annotations.*;
 
 
-@Table(name="Boardz")
+@Table(name="boards")
 public class Board {
 
-    @PrimaryKey(name="idz")
+    @PrimaryKey(name="id")
     public int id;
-    @Column(name="namez")
+    @Column(name="name")
     public String name;
-    @Column(name="desc")
+    @Column(name="description")
     public String description;
 
 
