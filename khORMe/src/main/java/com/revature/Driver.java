@@ -28,7 +28,7 @@ public class Driver {
 
 
         for (int i = 0; i < 0; i++) {
-            queryBuilder.SelectStar("boards");
+            queryBuilder.selectStar("boards");
             System.out.println(i);
         }
 

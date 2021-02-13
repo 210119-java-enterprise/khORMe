@@ -8,21 +8,21 @@ import com.revature.annotations.Table;
 @Table(name="threads")
 public class Thread {
     @PrimaryKey(name="id")
-    int id;
+    public int id;
     @Column(name="title")
-    String title;
+    public String title;
     @Column(name="created_time")
-    String createdTime;
+    public String createdTime;
     @Column(name="up_votes")
-    int upVotes;
+    public int upVotes;
     @Column(name="down_votes")
-    int downVotes;
+    public int downVotes;
     @Column(name="is_locked")
-    boolean isLocked;
+    public boolean isLocked;
     @Column(name="is_sticky")
-    boolean isSticky;
+    public boolean isSticky;
     @ForeignKey(name="board_id")
-    int boardId;
+    public int boardId;
     @ForeignKey(name="creator_id")
-    int creatorId;
+    public int creatorId;
 }
