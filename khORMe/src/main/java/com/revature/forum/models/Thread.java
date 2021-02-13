@@ -5,7 +5,7 @@ import com.revature.annotations.ForeignKey;
 import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 
-@Table(name="Threads")
+@Table(name="threads")
 public class Thread {
     @PrimaryKey(name="id")
     int id;

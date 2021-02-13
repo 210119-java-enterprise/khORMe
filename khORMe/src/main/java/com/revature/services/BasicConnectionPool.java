@@ -16,7 +16,8 @@ public class BasicConnectionPool implements ConnectionPool {
     private List<Connection> connectionPool;
     private List<Connection> usedConnections = new ArrayList<>();
     private static int INITIAL_POOL_SIZE = 10;
-
+    private static final int MAX_POOL_SIZE = 20;
+    private static final int MAX_TIMEOUT = 5;
 
 
 
@@ -36,29 +37,39 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
 
-//    public BasicConnectionPool getInstance() {
-//        return new BasicConnectionPool( url, user,  password,  connectionPool);
-//        }
-
-
     @Override
-    public Connection getConnection() {
-        Connection connection = connectionPool
-                .remove(connectionPool.size() - 1);
+    public Connection getConnection() throws SQLException {
+        if (connectionPool.isEmpty()) {
+            if (usedConnections.size() < MAX_POOL_SIZE) {
+                connectionPool.add(createConnection(url, user, password));
+            } else {
+                throw new RuntimeException("Maximum pool size reached, no available connections!");
+            }
+        }
+        //System.out.println("size: "+getSize()+" - "+connectionPool.size()+" - "+usedConnections.size());
+        Connection connection = connectionPool.remove(connectionPool.size() - 1);
+
+        if(!connection.isValid(MAX_TIMEOUT)){
+            connection = createConnection(url, user, password);
+        }
+        //System.out.println("size: "+getSize()+" - "+connectionPool.size()+" - "+usedConnections.size());
         usedConnections.add(connection);
+        //System.out.println("size: "+getSize()+" - "+connectionPool.size()+" - "+usedConnections.size());
         return connection;
     }
+
+
 
     @Override
     public boolean releaseConnection(Connection connection) {
         connectionPool.add(connection);
+        //System.out.println("returned to connection pool");
         return usedConnections.remove(connection);
+
     }
 
     private static Connection createConnection(String url, String user, String password) throws SQLException {
-        return DriverManager.getConnection(url, user, password);//TODO
-        //return getConnection(url, user, password);
-        //return null;
+        return DriverManager.getConnection(url, user, password);
     }
 
     public int getSize() {
@@ -106,6 +117,16 @@ public class BasicConnectionPool implements ConnectionPool {
 
     public void setUsedConnections(List<Connection> usedConnections) {
         this.usedConnections = usedConnections;
+    }
+
+
+    @Override
+    public void shutdown() throws SQLException {
+        usedConnections.forEach(this::releaseConnection);
+        for (Connection c : connectionPool) {
+            c.close();
+        }
+        connectionPool.clear();
     }
 
 }

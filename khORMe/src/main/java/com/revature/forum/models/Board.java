@@ -12,7 +12,8 @@ public class Board {
     public String name;
     @Column(name="description")
     public String description;
-
+    @Column(name="creator_id")
+    public int creatorId;
 
     public Board(int id, String name, String desc) {
         this.id = id;
@@ -22,6 +23,22 @@ public class Board {
 
     public int getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
     public void setId(int id) {

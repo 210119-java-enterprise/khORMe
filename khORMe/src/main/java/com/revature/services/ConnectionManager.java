@@ -8,8 +8,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-    ConnectionPool basicConnectionPool;
-
+    private ConnectionPool basicConnectionPool;
+    private Connection conn;
 
     private ConnectionManager() {super();}
 
@@ -20,17 +20,33 @@ public class ConnectionManager {
     }
 
 
-
+//    public Connection getConnection(){
+//        return conn;
+//        //return basicConnectionPool.getConnection();
+//    }
 
 
 
     public Connection getConnection(){
-            return basicConnectionPool.getConnection();
+        try {
+            return conn= basicConnectionPool.getConnection();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public void releaseConnection(){
+
+        basicConnectionPool.releaseConnection(conn);
     }
 
     public void setConnection(String url, String user, String pass){
         try {
             basicConnectionPool= BasicConnectionPool.create(url, user, pass);
+            //conn=getConnectionFromPool();
         }catch(SQLException e){
             e.printStackTrace();
         }

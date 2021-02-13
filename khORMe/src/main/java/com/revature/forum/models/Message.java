@@ -5,7 +5,7 @@ import com.revature.annotations.ForeignKey;
 import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 
-@Table(name="Messages")
+@Table(name="messages")
 public class Message {
     @PrimaryKey(name="id")
     public int id;

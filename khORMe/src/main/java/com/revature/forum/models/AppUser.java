@@ -11,31 +11,38 @@ import java.util.Objects;
 /**
  * Object that contains all available data pertaining to a user
  */
-@Table(name="user")
+
+@Table(name="users")
 public class AppUser {
     @PrimaryKey(name="id")
-    private int id;
+    public int id;
     @Column(name="first_name")
-    private String firstName;
+    public String firstName;
     @Column(name="last_name")
-    private String lastName;
+    public String lastName;
     @Column(name="username")
-    private String username;
+    public String username;
     @Column(name="pw")
-    private String password;
+    public String password;
     @Column(name="registration_date")
-    private String registrationDate;
+    public String registrationDate;
     @Column(name="is_active")
-    private boolean isActive;
+    public boolean isActive;
     @Column(name="email")
-    private String email;
-    @ForeignKey(name="roleId")
-    private int roleId;
-    private String address;
-    private String city;
-    private String state;
-    private String zip;
-    private String phone;
+    public String email;
+    @ForeignKey(name="user_role")
+    public int roleId;
+    @Column(name="address")
+    public String address;
+    @Column(name="city")
+    public String city;
+    @Column(name="state")
+    public String state;
+    @Column(name="zip")
+    public String zip;
+    @Column(name="phone")
+    public String phone;
+
     private UserRole userRole;
 
     public AppUser() {

@@ -19,9 +19,9 @@ public class XMLParser {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("table");
-            System.out.println("----------------------------");
+            //System.out.println("----------------------------");
             String[] str=new String[nList.getLength()+3];
 
             for (int i = 3; i < nList.getLength()+3; i++) {

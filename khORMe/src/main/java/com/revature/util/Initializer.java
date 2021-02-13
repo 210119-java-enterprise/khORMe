@@ -1,16 +1,7 @@
 package com.revature.util;
 
-import com.revature.services.BasicConnectionPool;
-import com.revature.services.ConnectionFactory;
 import com.revature.services.ConnectionManager;
 import com.revature.services.ConnectionPool;
-import com.revature.util.DbManager;
-
-import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Initializer {
 
@@ -20,18 +11,11 @@ public class Initializer {
     ConnectionManager connectionManager=ConnectionManager.getInstance();
 
     public void initialize(String configPath) {
-        logo();
+        //logo();
         initialConfig(configPath);
         System.out.println("\n\n-----Initialization Complete-------\n\n");
-
-
-
     }
 
-
-    public void getConnection(){
-
-    }
 
 
 
@@ -39,18 +23,16 @@ public class Initializer {
 
 
     private void initialConfig(String path){
-
+        System.out.println("[LOG] Parsing config file");
         String[] parsedXML= xml.parse(path);
-        System.out.println(parsedXML[0]);
-        System.out.println(parsedXML[1]);
-        System.out.println(parsedXML[2]);
+        System.out.println("[LOG] Creating metamodels");
         try{
 
             for (int i=0;i< parsedXML.length-3;i++) {
                 Class cls=Class.forName(parsedXML[i+3]);
                 Metamodel<Class> userMetamodel = Metamodel.of(cls);
                 db.add(userMetamodel);
-                db.print(i);
+                //db.print(i);
             }
 
 
@@ -58,9 +40,9 @@ public class Initializer {
             System.out.println("ERROR");
             e.printStackTrace();
         }
-
+            System.out.println("[LOG] Initializing connection pool");
             connectionManager.setConnection(parsedXML[0], parsedXML[1], parsedXML[2]);
-
+            System.out.println("[LOG] pools created");
     }
 
 

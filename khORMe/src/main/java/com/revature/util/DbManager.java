@@ -9,7 +9,7 @@ public class DbManager {
     private String dbUsername;
     private String dbPassword;
     private ArrayList<Metamodel<Class<?>>> tables=new ArrayList<>();
-
+    //private Metamodel<Class<?>> tempTable
     private DbManager() {
         super();
     }
@@ -24,9 +24,6 @@ public class DbManager {
     static {
 
     }
-
-
-
 
 
 
@@ -46,7 +43,16 @@ public class DbManager {
 
     public Metamodel<Class<?>> get(String name){
         for (Metamodel<Class<?>> table: tables) {
-            if(table.getTable().getTableName()==name){
+            if(table.getTable().getTableName().equals(name)){
+                return table;
+            }
+        }
+        return null;
+    }
+
+    public Metamodel<Class<?>> getByClassName(String name){
+        for (Metamodel<Class<?>> table: tables) {
+            if(table.getTable().getClassName().equals(name)){
                 return table;
             }
         }
