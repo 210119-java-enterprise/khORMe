@@ -3,6 +3,7 @@ package com.revature.services;
 import com.revature.util.DbManager;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,10 @@ public class BasicConnectionPool implements ConnectionPool {
         this.connectionPool=pool;
     }
 
+
 //    public BasicConnectionPool getInstance() {
 //        return new BasicConnectionPool( url, user,  password,  connectionPool);
-//    }
+//        }
 
 
     @Override
@@ -54,8 +56,9 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
     private static Connection createConnection(String url, String user, String password) throws SQLException {
-        //return DriverManager.getConnection(url, user, password);TODO
-        return null;
+        return DriverManager.getConnection(url, user, password);//TODO
+        //return getConnection(url, user, password);
+        //return null;
     }
 
     public int getSize() {

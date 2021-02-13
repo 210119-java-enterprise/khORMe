@@ -44,6 +44,16 @@ public class DbManager {
     }
 
 
+    public Metamodel<Class<?>> get(String name){
+        for (Metamodel<Class<?>> table: tables) {
+            if(table.getTable().getTableName()==name){
+                return table;
+            }
+        }
+        return null;
+    }
+
+
     public void print(int i){
         Metamodel mm=tables.get(i);
         List<ColumnField> columnFields = mm.getColumns();
