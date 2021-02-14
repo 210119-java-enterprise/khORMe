@@ -8,13 +8,10 @@ import com.revature.util.DbManager;
 import com.revature.util.Metamodel;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class QueryBuilder implements CrudQueryBuilder {
 ConnectionManager connectionManager=ConnectionManager.getInstance();
@@ -198,7 +195,7 @@ DbManager db=DbManager.getInstance();
                         sql2.append("?,");
                         break;
                     case "class java.lang.String":
-                        if(field.getName().equals("registrationDate")){break;}
+                        //if(field.getName().equals("registrationDate")){break;}
                         System.out.println("str: "+field.getAnnotation(Column.class).name()+" == "+field.get(newObj));
                         sql1.append(field.getAnnotation(Column.class).name()).append(",");
                         args.add(field.get(newObj));
@@ -211,6 +208,15 @@ DbManager db=DbManager.getInstance();
                         args.add(field.get(newObj));
                         datatype.add(field.getType().toString());
                         sql2.append("?,");
+                        break;
+                    case "class java.util.Date":
+                        //if(field.getName().equals("registrationDate")){break;}
+                        System.out.println("str: "+field.getAnnotation(Column.class).name()+" == "+field.get(newObj));
+                        sql1.append(field.getAnnotation(Column.class).name()).append(",");
+                        args.add(field.get(newObj));
+                        datatype.add(field.getType().toString());
+                        sql2.append("?,");
+                        System.out.println("dsadasdased");
                         break;
                     default:
                         System.out.println("ERROR DEFAULT -- field.getType() =="+field.getType());
@@ -257,8 +263,13 @@ DbManager db=DbManager.getInstance();
                         System.out.println("bool"+arg);
                         pstmt.setBoolean(i, Boolean.getBoolean(arg.toString()));
                         break;
+                    case "class java.util.Date":
+
+                        System.out.println("date"+arg);
+                        pstmt.setTimestamp(i, new Timestamp(Calendar.getInstance().getTime().getTime()));
+                        break;
                     default:
-                        System.out.println("ERROR DEFAULT -- field.getType() ==");
+                        System.out.println("ERROR DEFAULTr -- field.getType() =="+datatype.get(i-1));
                         break;
                 }
                 i++;
