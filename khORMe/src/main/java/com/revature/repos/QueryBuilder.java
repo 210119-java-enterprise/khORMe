@@ -1,5 +1,6 @@
 package com.revature.repos;
 
+import com.revature.annotations.Column;
 import com.revature.services.ConnectionManager;
 import com.revature.util.ColumnField;
 import com.revature.util.CreateObject;
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class QueryBuilder implements CrudQueryBuilder {
 ConnectionManager connectionManager=ConnectionManager.getInstance();
@@ -174,39 +176,98 @@ DbManager db=DbManager.getInstance();
             String className=newObj.getClass().getName();
             Class cls=Class.forName(className);
             Metamodel<Class<?>> table=db.getByClassName(newObj.getClass().getSimpleName());
+            List<Object> args= new LinkedList<>();
+            List<String> datatype= new LinkedList<>();
+            StringBuilder sql1 = new StringBuilder("insert into " + table.getTable().getTableName() + " (");
+//            for (ColumnField field: table.getColumns()) {
+//                sql1.append(field.getColumnName()).append(",");
+//            }
 
-            StringBuilder sql = new StringBuilder("insert into " + table.getTable().getTableName() + " (");
-            for (ColumnField field: table.getColumns()) {
-                sql.append(field.getColumnName()).append(",");
-            }
-            sql.deleteCharAt(sql.length()-1);
-            sql.append(") \n values(");
+            StringBuilder sql2 = new StringBuilder(") \n values(");
 
 
-            for (Field field: cls.getClass().getDeclaredFields()  ) {
+            for (Field field: newObj.getClass().getDeclaredFields()  ) {
+                System.out.println(field.getName());
                 switch(field.getType().toString()){
                     case "int":
-                        sql.append(field.getName()).append(",");
+
+                        if(field.getName().equals("id")){break;}
+                        System.out.println("int: "+field.getAnnotation(Column.class).name()+" == "+field.get(newObj));
+                        sql1.append(field.getAnnotation(Column.class).name()).append(",");
+                        args.add(field.get(newObj));
+                        datatype.add(field.getType().toString());
+                        sql2.append("?,");
                         break;
                     case "class java.lang.String":
-                        sql.append("'").append(field.getName()).append("',");
+                        if(field.getName().equals("registrationDate")){break;}
+                        System.out.println("str: "+field.getAnnotation(Column.class).name()+" == "+field.get(newObj));
+                        sql1.append(field.getAnnotation(Column.class).name()).append(",");
+                        args.add(field.get(newObj));
+                        datatype.add(field.getType().toString());
+                        sql2.append("?,");
                         break;
                     case "boolean":
-                        sql.append(field.getName()).append(",");
+                        System.out.println("boo: "+field.getAnnotation(Column.class).name()+" == "+field.get(newObj));
+                        sql1.append(field.getAnnotation(Column.class).name()).append(",");
+                        args.add(field.get(newObj));
+                        datatype.add(field.getType().toString());
+                        sql2.append("?,");
                         break;
                     default:
-                        System.out.println("ERROR DEFAULT -- field.getType()");
+                        System.out.println("ERROR DEFAULT -- field.getType() =="+field.getType());
                         break;
                 }
 
             }
-            sql.deleteCharAt(sql.length()-1);
-            sql.append(");");
-            System.out.println(sql);
-            PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-            pstmt.execute(sql.toString());
-
-        } catch (SQLException | ClassNotFoundException e) {
+            sql1.deleteCharAt(sql1.length()-1);
+            sql2.deleteCharAt(sql2.length()-1);
+            sql2.append(");");
+            sql1.append(sql2);
+            System.out.println(sql1);
+            //String sql=sql1.toString();
+            System.out.println("3");
+            PreparedStatement pstmt = conn.prepareStatement(sql1.toString());
+            System.out.println("4");
+            int i=1;
+            for (Object arg: args ) {
+                switch(datatype.get(i-1)){
+                    case "int":
+                        if(arg == null){
+                            System.out.println("null int");
+                            pstmt.setInt(i,-1);
+                            break;
+                        }
+                        System.out.println("int"+arg.toString());
+                        pstmt.setInt(i, Integer.parseInt(arg.toString()));
+                        break;
+                    case "class java.lang.String":
+                        if(arg == null){
+                            System.out.println("null str");
+                            pstmt.setString(i,"");
+                            break;
+                        }
+                        System.out.println("str"+arg.toString());
+                        pstmt.setString(i, arg.toString());
+                        break;
+                    case "boolean":
+                        if(arg == null){
+                            System.out.println("null bool");
+                            pstmt.setBoolean(i,false);
+                            break;
+                        }
+                        System.out.println("bool"+arg);
+                        pstmt.setBoolean(i, Boolean.getBoolean(arg.toString()));
+                        break;
+                    default:
+                        System.out.println("ERROR DEFAULT -- field.getType() ==");
+                        break;
+                }
+                i++;
+            }
+            System.out.println("1) count "+ i);
+            pstmt.execute();
+            System.out.println("2");
+        } catch (SQLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
