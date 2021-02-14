@@ -41,7 +41,6 @@ DbManager db=DbManager.getInstance();
             String className=tableObj.getClass().getName();
             Class cls=Class.forName(className);
             Metamodel<Class<?>> table=db.getByClassName(tableObj.getClass().getSimpleName());
-            //Object instance=cls.newInstance();
             ArrayList<Object> instances=new ArrayList<>();
 
             String sql = "select*from "+table.getTable().getTableName()+";";

@@ -32,12 +32,16 @@ public class CreateObject {
                         f = obj.getClass().getDeclaredField(field.getName());
                         f.setBoolean(obj, rs.getBoolean(field.getColumnName()));
                         break;
+                    case "class java.util.Date":
+                        f = obj.getClass().getDeclaredField(field.getName());
+                        f.set(obj, rs.getDate(field.getColumnName()));
+                        break;
                     default:
-                        System.out.println("ERROR DEFAULT -- field.getType()");
+                        System.out.println("ERROR unregistered type--"+field.getType().toString());
                         break;
                 }
             }
-            System.out.print("\n");
+            //System.out.print("\n");
         instances.add(obj);
         }
         if(size<1){
