@@ -10,17 +10,32 @@ import java.util.List;
 
 public class BasicConnectionPool implements ConnectionPool {
 
+    /** url to database */
     private String url;
+    /** username for database */
     private String user;
+    /** password for database */
     private String password;
+    /** list of connections available */
     private List<Connection> connectionPool;
+    /** list of conntions currently in use */
     private List<Connection> usedConnections = new ArrayList<>();
+    /** starting size of the connection pool */
     private static int INITIAL_POOL_SIZE = 10;
+    /** max size pool can increase to */
     private static final int MAX_POOL_SIZE = 20;
+    /** time allotted to wait for response when validating connection */
     private static final int MAX_TIMEOUT = 5;
 
 
-
+    /**
+     * Creation of the pool -- Create
+     * @param url url to database
+     * @param user username for database
+     * @param password password for database
+     * @return The pool of connections just created
+     * @throws SQLException
+     */
     public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
         List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
@@ -29,6 +44,13 @@ public class BasicConnectionPool implements ConnectionPool {
         return new BasicConnectionPool(url, user, password, pool);
     }
 
+    /**
+     * Constructor for the connection pool. Called by the create method.
+     * @param url url to database
+     * @param user username for database
+     * @param password password for database
+     * @param pool
+     */
     private BasicConnectionPool(String url, String user, String password, List<Connection> pool){
         this.url=url;
         this.user=user;
@@ -37,6 +59,11 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
 
+    /**
+     * gives a connection to the requester If the connection pool has available connections
+     * @return a connection from the pool
+     * @throws SQLException
+     */
     @Override
     public Connection getConnection() throws SQLException {
         if (connectionPool.isEmpty()) {
@@ -59,15 +86,27 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
 
-
+    /**
+     * returns connection back to the pool of available connection
+     * and removes it from the active connections list
+     * @param connection the connection to release
+     * @return true if the connection was successfully removed, false if otherwise
+     */
     @Override
     public boolean releaseConnection(Connection connection) {
         connectionPool.add(connection);
-        //System.out.println("returned to connection pool");
+        //System.out.println("returned to connection pool  POOLSIZE="+connectionPool.size());
         return usedConnections.remove(connection);
-
     }
 
+    /**
+     *
+     * @param url
+     * @param user
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     private static Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
