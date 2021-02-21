@@ -10,15 +10,15 @@ public class KeyField {
 
     public KeyField(Field field) {
         if (field.getAnnotation(PrimaryKey.class) == null) {
-            throw new IllegalStateException("Cannot create ColumnField object! Provided field, " + getName() + "is not annotated with @Column");
+            //throw new IllegalStateException("Cannot create ColumnField object! Provided field, " + getName() + "is not annotated with @Column");
         }
         this.field = field;
 
     }
 
-    public String getName() {
-        return field.getName();
-    }
+//    public String getName() {
+//        return field.getName();
+//    }
 
     public Class<?> getType() {
         return field.getType();

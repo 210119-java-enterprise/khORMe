@@ -65,7 +65,7 @@ public class DbManager {
         List<ColumnField> columnFields = mm.getColumns();
         System.out.println("\nTABLE: "+mm.getTable().getTableName());
         System.out.println("_______________________________________");
-        System.out.print("| PK:"+mm.getPrimaryKey().getKeyName()+"("+mm.getPrimaryKey().getType().getSimpleName()+") | ");
+        //System.out.print("| PK:"+mm.getPrimaryKey().getKeyName()+"("+mm.getPrimaryKey().getType().getSimpleName()+") | ");
         for(ColumnField columnField :columnFields) {
             System.out.print(""+columnField.getColumnName()+"("+columnField.getType().getSimpleName()+") | ");
         }

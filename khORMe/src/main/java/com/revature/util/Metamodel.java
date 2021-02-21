@@ -26,23 +26,31 @@ public class Metamodel<T> {
         return cls;
     }
 
+    /**
+     * Creates and returns object containing basic table data
+     * @return Tabledata cobject contain name and simple name
+     */
     public TableData getTable() {
         Table tbl = cls.getAnnotation(Table.class);
         return new TableData(cls.getSimpleName(), tbl.name());
     }
 
 
-    public KeyField getPrimaryKey() {
-        Field[] fields = cls.getDeclaredFields();
-        for (Field field : fields) {
-            PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
-            if (primaryKey != null) {
-                return new KeyField(field);
-            }
-        }
-        throw new RuntimeException("Did not find a field annotated with @Id in: " + cls.getName());
-    }
+//    public KeyField getPrimaryKey() {
+//        Field[] fields = cls.getDeclaredFields();
+//        for (Field field : fields) {
+//            PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+//            if (primaryKey != null) {
+//                return new KeyField(field);
+//            }
+//        }
+//        throw new RuntimeException("Did not find a field annotated with @Id in: " + cls.getName());
+//    }
 
+    /**
+     * create a list of columns for a given object
+     * @return list of columns containing column name, key, variable name, and datatype
+     */
     public List<ColumnField> getColumns() {
         List<ColumnField> columnFields = new ArrayList<>();
         Field[] fields = cls.getDeclaredFields();
