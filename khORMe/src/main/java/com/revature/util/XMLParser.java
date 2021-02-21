@@ -9,6 +9,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
+/**
+ * takes in an XML document and seeks out two sets of data:
+ * Database properties for accessing the database and
+ * location of Classes to be scraped for information
+ */
 public class XMLParser {
 
     public String[] parse(String path){
@@ -19,9 +24,7 @@ public class XMLParser {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("table");
-            //System.out.println("----------------------------");
             String[] str=new String[nList.getLength()+3];
 
             for (int i = 3; i < nList.getLength()+3; i++) {

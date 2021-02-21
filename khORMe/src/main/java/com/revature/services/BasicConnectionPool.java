@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Class containing pool initialization, the list of connections and methods for utilizing them
+ */
 public class BasicConnectionPool implements ConnectionPool {
 
     /** url to database */
@@ -28,21 +32,6 @@ public class BasicConnectionPool implements ConnectionPool {
     private static final int MAX_TIMEOUT = 5;
 
 
-    /**
-     * Creation of the pool -- Create
-     * @param url url to database
-     * @param user username for database
-     * @param password password for database
-     * @return The pool of connections just created
-     * @throws SQLException
-     */
-    public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
-        List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
-        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-            pool.add(createConnection(url, user, password));
-        }
-        return new BasicConnectionPool(url, user, password, pool);
-    }
 
     /**
      * Constructor for the connection pool. Called by the create method.
@@ -60,7 +49,42 @@ public class BasicConnectionPool implements ConnectionPool {
 
 
     /**
+     * Creation of the pool -- Create a list of connections to the database
+     * @param url url to database
+     * @param user username for database
+     * @param password password for database
+     * @return The pool of connections just created
+     * @throws SQLException
+     */
+    public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
+        List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
+        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+            pool.add(createConnection(url, user, password));
+        }
+        return new BasicConnectionPool(url, user, password, pool);
+    }
+
+
+    /**
+     *
+     * @param url
+     * @param user
+     * @param password
+     * @return
+     * @throws SQLException
+     */
+    private static Connection createConnection(String url, String user, String password) throws SQLException {
+        return DriverManager.getConnection(url, user, password);
+    }
+
+
+
+
+
+
+    /**
      * gives a connection to the requester If the connection pool has available connections
+     * allows for pool resizing up to a max limit
      * @return a connection from the pool
      * @throws SQLException
      */
@@ -100,15 +124,16 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
     /**
-     *
-     * @param url
-     * @param user
-     * @param password
-     * @return
+     * sends all connections to the connection pool, and closes them
      * @throws SQLException
      */
-    private static Connection createConnection(String url, String user, String password) throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+    @Override
+    public void shutdown() throws SQLException {
+        usedConnections.forEach(this::releaseConnection);
+        for (Connection c : connectionPool) {
+            c.close();
+        }
+        connectionPool.clear();
     }
 
     public int getSize() {
@@ -159,13 +184,5 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
 
-    @Override
-    public void shutdown() throws SQLException {
-        usedConnections.forEach(this::releaseConnection);
-        for (Connection c : connectionPool) {
-            c.close();
-        }
-        connectionPool.clear();
-    }
 
 }

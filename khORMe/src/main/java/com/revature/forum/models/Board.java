@@ -6,7 +6,7 @@ import com.revature.annotations.*;
 @Table(name="boards")
 public class Board {
 
-    @PrimaryKey(name="id")
+    @Column(name="id", key="pk")
     public int id;
     @Column(name="name")
     public String name;
@@ -14,6 +14,10 @@ public class Board {
     public String description;
     @Column(name="creator_id")
     public int creatorId;
+
+    public Board() {
+        super();
+    }
 
     public Board(int id, String name, String desc) {
         this.id = id;

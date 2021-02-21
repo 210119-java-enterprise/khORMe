@@ -84,7 +84,7 @@ public class ResultSetMapper {
                 Field f;
                 switch(field.getType().toString()){
                     case "int":
-                        System.out.println(obj.getClass().getDeclaredField(field.getName()) +" "+rs.getInt(field.getColumnName()));
+                        //System.out.println(obj.getClass().getDeclaredField(field.getName()) +" "+rs.getInt(field.getColumnName()));
                         f = obj.getClass().getDeclaredField(field.getName());
                         f.setInt(obj, rs.getInt(field.getColumnName()));
                         break;

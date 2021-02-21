@@ -2,6 +2,9 @@ package com.revature.util;
 
 import com.revature.annotations.Table;
 
+/**
+ * strores the class name and table name for the metamodel
+ */
 public class TableData {
     private String tableName;
     private String className;

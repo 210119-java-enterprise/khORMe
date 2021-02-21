@@ -5,6 +5,12 @@ import com.revature.services.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+/**
+ * api initializer
+ * handles the initial call to start up portions of the api
+ * calls
+ */
 public class Initializer {
     private static final Logger logger = LogManager.getLogger(Initializer.class);
 
@@ -14,7 +20,7 @@ public class Initializer {
     ConnectionManager connectionManager=ConnectionManager.getInstance();
 
     public void initialize(String configPath) {
-        //logo();
+        logo();
         logger.info("Initializing application");
         initialConfig(configPath);
         logger.info("Initialization Complete");

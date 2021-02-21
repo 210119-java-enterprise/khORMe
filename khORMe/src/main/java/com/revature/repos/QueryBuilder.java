@@ -11,10 +11,39 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
+
+/**
+ * Class containing all the SQL commands
+ */
 public class QueryBuilder implements CrudQueryBuilder {
 ConnectionManager connectionManager=ConnectionManager.getInstance();
 DbManager db=DbManager.getInstance();
 
+    /**
+     * For testing purposes only --
+     * @param obj
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public void test(Object obj) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
+        Metamodel<Class<?>> table=db.getByClassName(obj.getClass().getSimpleName());
+
+        String className=obj.getClass().getName();
+        Class cls=Class.forName(className);
+        Object instance=cls.newInstance();
+
+        /** both return the value of the variable*/
+        System.out.println(instance.getClass().getDeclaredField("id").getInt(obj));
+        System.out.println(cls.getDeclaredField("id").getInt(obj));
+
+
+    }
+
+//---------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------- Selects
+// ---------------------------------------------------------------------------------------------------------
 
     /**
      * Queries and Prints all records in a table to the console
@@ -130,8 +159,9 @@ DbManager db=DbManager.getInstance();
 
     /**
      * find record by username and password
+     *  --columns must be labeled username and password in database
      * @param tableName the table to be searched
-     * @param username the user name to be seached for
+     * @param username the user name to be searched for
      * @param pw the correlated password
      * @return the record in the form of an object if found, otherwise returns null
      */
@@ -156,7 +186,7 @@ DbManager db=DbManager.getInstance();
      * @param tableName Table to search
      * @param columnName  Column to search
      * @param value the value to be searched for
-     * @return
+     * @return true if it exists, false otherwise
      */
     public boolean findMatchBool(String tableName, String columnName, String value) {
         try(Connection conn = connectionManager.getConnection()){
@@ -181,7 +211,9 @@ DbManager db=DbManager.getInstance();
 
 
 
-
+//---------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------- Inserts
+// ---------------------------------------------------------------------------------------------------------
 
     /**
      * parses an object and Saves its data to the database
@@ -200,7 +232,7 @@ DbManager db=DbManager.getInstance();
 
             /** Build sql string */
             for (Field field: newObj.getClass().getDeclaredFields()  ) {
-                System.out.println(field.getName());
+                //System.out.println(field.getName());
                 if(field.getDeclaredAnnotations().length>0) {
                     switch (field.getType().toString()) {
                         case "int":
@@ -208,33 +240,32 @@ DbManager db=DbManager.getInstance();
                             if (field.getName().equals("id")) {
                                 break;
                             }
-                            System.out.println("int: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
+                            //System.out.println("int: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
                             sql1.append(field.getAnnotation(Column.class).name()).append(",");
                             args.add(field.get(newObj));
                             datatype.add(field.getType().toString());
                             sql2.append("?,");
                             break;
                         case "class java.lang.String":
-                            System.out.println("str: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
+                            //System.out.println("str: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
                             sql1.append(field.getAnnotation(Column.class).name()).append(",");
                             args.add(field.get(newObj));
                             datatype.add(field.getType().toString());
                             sql2.append("?,");
                             break;
                         case "boolean":
-                            System.out.println("boo: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
+                            //System.out.println("boo: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
                             sql1.append(field.getAnnotation(Column.class).name()).append(",");
                             args.add(field.get(newObj));
                             datatype.add(field.getType().toString());
                             sql2.append("?,");
                             break;
                         case "class java.util.Date":
-                            System.out.println("str: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
+                            //System.out.println("str: " + field.getAnnotation(Column.class).name() + " == " + field.get(newObj));
                             sql1.append(field.getAnnotation(Column.class).name()).append(",");
                             args.add(field.get(newObj));
                             datatype.add(field.getType().toString());
                             sql2.append("?,");
-                            System.out.println("dsadasdased");
                             break;
                         default:
                             System.out.println("ERROR DEFAULT -- field.getType() ==" + field.getType());
@@ -292,27 +323,7 @@ DbManager db=DbManager.getInstance();
     }
 
 
-    /**
-     * For testing purposes only --
-     * @param obj
-     * @throws ClassNotFoundException
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     */
-    public void test(Object obj) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
-        Metamodel<Class<?>> table=db.getByClassName(obj.getClass().getSimpleName());
 
-        String className=obj.getClass().getName();
-        Class cls=Class.forName(className);
-        Object instance=cls.newInstance();
-
-        /** both return the value of the variable*/
-        System.out.println(instance.getClass().getDeclaredField("id").getInt(obj));
-        System.out.println(cls.getDeclaredField("id").getInt(obj));
-
-
-    }
 
     @Override
     public LinkedList findAll() {
@@ -324,6 +335,11 @@ DbManager db=DbManager.getInstance();
         return null;
     }
 
+
+
+//---------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------- Updates
+// ---------------------------------------------------------------------------------------------------------
     /**
      *
      * @param obj
@@ -412,8 +428,9 @@ DbManager db=DbManager.getInstance();
 //                "where username = old value"
         return false;
     }
-
-
+//---------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------- Deletes
+// ---------------------------------------------------------------------------------------------------------
     /**
      *
      * @param deleteObj
@@ -443,8 +460,15 @@ DbManager db=DbManager.getInstance();
 
 
 
+
+
+
+
+
+
     @Override
     public boolean deleteById(int id) {
+
         return false;
     }
 }

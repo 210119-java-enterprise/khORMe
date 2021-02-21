@@ -18,23 +18,23 @@ public class Driver {
 
 
         QueryBuilder queryBuilder= new QueryBuilder();
-        AppUser authUser=new AppUser();
-        System.out.println("going in");
-        authUser = (AppUser) queryBuilder.findObjectMatch(authUser, "1", "1");
-        System.out.println("coming out");
-        System.out.println(authUser.getAddress());
-
-
-
-
-        for (int i = 0; i < 0; i++) {
-            queryBuilder.selectStar("boards");
-            System.out.println(i);
-        }
-
-
-        //queryBuilder.SelectStar("users");
-        queryBuilder.findMatch("users","1", "1");
+//        AppUser authUser=new AppUser();
+//        System.out.println("going in");
+//        authUser = (AppUser) queryBuilder.findObjectMatch(authUser, "1", "1");
+//        System.out.println("coming out");
+//        System.out.println(authUser.getAddress());
+//
+//
+//
+//
+//        for (int i = 0; i < 0; i++) {
+//            queryBuilder.selectStar("boards");
+//            System.out.println(i);
+//        }
+//
+//
+//        //queryBuilder.SelectStar("users");
+//        queryBuilder.findMatch("users","1", "1");
 
 
     }

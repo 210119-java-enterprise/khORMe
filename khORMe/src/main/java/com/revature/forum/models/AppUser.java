@@ -1,20 +1,18 @@
 package com.revature.forum.models;
 
 import com.revature.annotations.Column;
-import com.revature.annotations.ForeignKey;
-import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 
-import java.lang.annotation.Retention;
+import java.util.Date;
 import java.util.Objects;
 
 /**
  * Object that contains all available data pertaining to a user
  */
 
-@Table(name="users")
+@Table(name="app_users")
 public class AppUser {
-    @PrimaryKey(name="id")
+    @Column(name="id", key="pk")
     public int id;
     @Column(name="first_name")
     public String firstName;
@@ -22,15 +20,15 @@ public class AppUser {
     public String lastName;
     @Column(name="username")
     public String username;
-    @Column(name="pw")
+    @Column(name="password")
     public String password;
-    @Column(name="registration_date")
-    public String registrationDate;
+    @Column(name="registration_datetime")
+    public Date registrationDate;
     @Column(name="is_active")
     public boolean isActive;
     @Column(name="email")
     public String email;
-    @ForeignKey(name="user_role")
+    @Column(name="role_id", key="fk")
     public int roleId;
     @Column(name="address")
     public String address;
@@ -46,7 +44,10 @@ public class AppUser {
     private UserRole userRole;
 
     public AppUser() {
-        super();
+        id=0;
+        isActive=false;
+        roleId=0;
+        username="guest";
     }
 
     /**
@@ -69,6 +70,21 @@ public class AppUser {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.roleId=0;
+        this.isActive=true;
+
+    }
+
+    public AppUser(String firstName, String lastName, String username, String password, String email) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.roleId=1;
+        this.isActive=true;
+
     }
     /** constructor */
     public AppUser(int id, String firstName, String lastName, String username, String password, UserRole userRole) {
@@ -127,11 +143,11 @@ public class AppUser {
 
 
 
-    public String getRegistrationDate() {
+    public Date getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -175,6 +191,29 @@ public class AppUser {
         this.phone = phone;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -202,8 +241,16 @@ public class AppUser {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", isActive=" + isActive +
+                ", email='" + email + '\'' +
+                ", roleId=" + roleId +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                ", phone='" + phone + '\'' +
                 ", userRole=" + userRole +
                 '}';
     }
-
 }

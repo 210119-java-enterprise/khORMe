@@ -1,11 +1,9 @@
 package com.revature.util;
 
-import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Column;
 import com.revature.annotations.Table;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
