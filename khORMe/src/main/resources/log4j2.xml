@@ -2,11 +2,12 @@
 <Configuration status="WARN">
     <Appenders>
 
-        <!-- Console Appender -->
-<!--        <Console name="stdout" target="SYSTEM_OUT">-->
-<!--            &lt;!&ndash; Pattern of log messages for the console appender &ndash;&gt;-->
+         Console Appender
+        <Console name="stdout" target="SYSTEM_OUT">
+            <!-- Pattern of log messages for the console appender -->
 <!--            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
-<!--        </Console>-->
+            <PatternLayout pattern=""/>
+        </Console>
 
         <!-- File Appender -->
         <File name="info_fileout" fileName="src/main/resources/info_log.txt" append="true">

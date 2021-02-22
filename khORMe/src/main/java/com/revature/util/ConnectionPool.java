@@ -1,6 +1,7 @@
-package com.revature.services;
+package com.revature.util;
 
-import com.revature.util.DbManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Class containing pool initialization, the list of connections and methods for utilizing them
  */
-public class BasicConnectionPool implements ConnectionPool {
+public class ConnectionPool implements ConnectionPoolInterface {
 
     /** url to database */
     private String url;
@@ -40,7 +41,7 @@ public class BasicConnectionPool implements ConnectionPool {
      * @param password password for database
      * @param pool
      */
-    private BasicConnectionPool(String url, String user, String password, List<Connection> pool){
+    private ConnectionPool(String url, String user, String password, List<Connection> pool){
         this.url=url;
         this.user=user;
         this.password=password;
@@ -56,12 +57,12 @@ public class BasicConnectionPool implements ConnectionPool {
      * @return The pool of connections just created
      * @throws SQLException
      */
-    public static BasicConnectionPool create(String url, String user, String password) throws SQLException {
+    public static ConnectionPool create(String url, String user, String password) throws SQLException {
         List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             pool.add(createConnection(url, user, password));
         }
-        return new BasicConnectionPool(url, user, password, pool);
+        return new ConnectionPool(url, user, password, pool);
     }
 
 

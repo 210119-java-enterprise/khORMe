@@ -1,11 +1,9 @@
 package com.revature.repos;
 
 import com.revature.annotations.Column;
-import com.revature.services.ConnectionManager;
-import com.revature.util.ColumnField;
-import com.revature.util.ResultSetMapper;
-import com.revature.util.DbManager;
-import com.revature.util.Metamodel;
+import com.revature.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -18,7 +16,7 @@ import java.util.*;
 public class QueryBuilder implements CrudQueryBuilder {
 ConnectionManager connectionManager=ConnectionManager.getInstance();
 DbManager db=DbManager.getInstance();
-
+Logger logger = LogManager.getLogger(QueryBuilder.class);
     /**
      * For testing purposes only --
      * @param obj
@@ -50,6 +48,7 @@ DbManager db=DbManager.getInstance();
      * @param tableName the name of the table to be queried
      */
     public void selectStar(String tableName) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             Metamodel<Class<?>> table=db.get(tableName);
             String sql = "select*from "+table.getTable().getTableName()+";";
@@ -60,7 +59,10 @@ DbManager db=DbManager.getInstance();
             ResultSetMapper.printResults(rs, fields);
 ;
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            logger.error("Attempt Failed");
+            e.printStackTrace();
+        }
         connectionManager.releaseConnection();
     }
 
@@ -71,6 +73,7 @@ DbManager db=DbManager.getInstance();
      * @return all records in object format
      */
     public ArrayList<Object> selectStarObject(Object tableObj) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             String className=tableObj.getClass().getName();
             Class cls=Class.forName(className);
@@ -88,6 +91,7 @@ DbManager db=DbManager.getInstance();
             connectionManager.releaseConnection();
             return null;
         } catch (SQLException | IllegalAccessException | NoSuchFieldException | InstantiationException | ClassNotFoundException e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
         return null;
@@ -102,6 +106,7 @@ DbManager db=DbManager.getInstance();
      * @return an Arraylist of objects containing the data of the records
      */
     public ArrayList<Object> selectStarObjectWhereInt(Object tableObj,String col , int value) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             String className=tableObj.getClass().getName();
             Class cls=Class.forName(className);
@@ -119,6 +124,7 @@ DbManager db=DbManager.getInstance();
             connectionManager.releaseConnection();
             return null;
         } catch (SQLException | IllegalAccessException | NoSuchFieldException | InstantiationException | ClassNotFoundException e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
         return null;
@@ -133,6 +139,7 @@ DbManager db=DbManager.getInstance();
      * @return
      */
     public Object findObjectMatch(Object tableObj, String username, String pw) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             String className=tableObj.getClass().getName();
             Class cls=Class.forName(className);
@@ -150,6 +157,7 @@ DbManager db=DbManager.getInstance();
             connectionManager.releaseConnection();
             return null;
         } catch (SQLException | IllegalAccessException | NoSuchFieldException | InstantiationException | ClassNotFoundException e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
         connectionManager.releaseConnection();
@@ -166,6 +174,7 @@ DbManager db=DbManager.getInstance();
      * @return the record in the form of an object if found, otherwise returns null
      */
     public void findMatch(String tableName, String username, String pw) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             Metamodel<Class<?>> table=db.get(tableName);
             String sql = "select*from "+table.getTable().getTableName()+" where username = '"+username+"' and password = '"+pw+"';";
@@ -174,7 +183,10 @@ DbManager db=DbManager.getInstance();
             ColumnField[] fields = table.getColumns().stream().toArray(ColumnField[]::new);
             ResultSetMapper.printResults(rs, fields);
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            logger.error("Attempt Failed");
+            e.printStackTrace();
+        }
         connectionManager.releaseConnection();
         //return null;
     }
@@ -189,6 +201,7 @@ DbManager db=DbManager.getInstance();
      * @return true if it exists, false otherwise
      */
     public boolean findMatchBool(String tableName, String columnName, String value) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             Metamodel<Class<?>> table=db.get(tableName);
             String sql = "select*from "+table.getTable().getTableName()+" where "+columnName+" = '"+value+"';";
@@ -203,7 +216,10 @@ DbManager db=DbManager.getInstance();
                 return true;
             }
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            logger.error("Attempt Failed");
+            e.printStackTrace();
+        }
         connectionManager.releaseConnection();
         return false;
     }
@@ -221,6 +237,7 @@ DbManager db=DbManager.getInstance();
      */
     @Override
     public void save(Object newObj) {
+        logger.info("Attempting Query");
         try(Connection conn = connectionManager.getConnection()){
             List<Object> args= new LinkedList<>();
             List<String> datatype= new LinkedList<>();
@@ -316,6 +333,7 @@ DbManager db=DbManager.getInstance();
             }
             pstmt.execute();
         } catch (SQLException | IllegalAccessException e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
         connectionManager.releaseConnection();
@@ -348,6 +366,7 @@ DbManager db=DbManager.getInstance();
      * @return
      */
     public boolean updateById(Object obj, String col, String value) {//TODO pstmt
+        logger.info("Building Query");
             String sql="";
             Metamodel<Class<?>> table=db.getByClassName(obj.getClass().getSimpleName());
             String className=obj.getClass().getName();
@@ -358,17 +377,20 @@ DbManager db=DbManager.getInstance();
                         "set "+col+" = '"+value+"'\n" +
                         "where id = "+cls.getDeclaredField("id").getInt(obj)+";";
             } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
+                logger.error("Build Failed");
                 e.printStackTrace();
             }
 
 
         try(Connection conn = connectionManager.getConnection()){
+            logger.info("Attempting Query");
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.execute();
             connectionManager.releaseConnection();
             return true;
 
         } catch (SQLException e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
         connectionManager.releaseConnection();
@@ -436,6 +458,7 @@ DbManager db=DbManager.getInstance();
      * @param deleteObj
      */
     public void delete (Object deleteObj) {//TODO delete cascade
+        logger.info("Building SQL DELETE Statement");
         String sql="";
         int id=-1;
         try {
@@ -445,14 +468,16 @@ DbManager db=DbManager.getInstance();
             table.getTable().getTableName();
             sql= "delete from "+table.getTable().getTableName()+" where id = ?;";
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            logger.error("Statement Build failed");
             e.printStackTrace();
         }
-
+        logger.info("Attempting Statement Execution");
         try(Connection conn = connectionManager.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (Exception e) {
+            logger.error("Attempt Failed");
             e.printStackTrace();
         }
 

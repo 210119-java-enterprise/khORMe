@@ -1,7 +1,5 @@
 package com.revature.util;
 
-import com.revature.services.ConnectionManager;
-import com.revature.services.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +14,6 @@ public class Initializer {
 
     DbManager db = DbManager.getInstance();
     XMLParser xml = new XMLParser();
-    ConnectionPool basicConnectionPool;
     ConnectionManager connectionManager=ConnectionManager.getInstance();
 
     public void initialize(String configPath) {
@@ -26,9 +23,6 @@ public class Initializer {
         logger.info("Initialization Complete");
 
     }
-
-
-
 
 
 
@@ -43,7 +37,6 @@ public class Initializer {
                 Class cls=Class.forName(parsedXML[i+3]);
                 Metamodel<Class> userMetamodel = Metamodel.of(cls);
                 db.add(userMetamodel);
-                //db.print(i);
             }
 
 

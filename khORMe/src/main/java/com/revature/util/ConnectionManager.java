@@ -1,4 +1,7 @@
-package com.revature.services;
+package com.revature.util;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,9 +11,9 @@ import java.sql.SQLException;
  * the outward facing class used to access and connections
  */
 public class ConnectionManager {
-    private ConnectionPool basicConnectionPool;
+    private ConnectionPoolInterface basicConnectionPool;
     private Connection conn;
-
+    Logger logger = LogManager.getLogger(ConnectionManager.class);
     private ConnectionManager() {super();}
 
     /** eager singleton */
@@ -25,11 +28,14 @@ public class ConnectionManager {
      * @return an available connection
      */
     public Connection getConnection(){
+        logger.info("Getting Connection from Pool");
         try {
+            logger.info("Connection Acquired");
             return conn= basicConnectionPool.getConnection();
         }catch(SQLException e){
             e.printStackTrace();
         }
+        logger.error("Failed to Connect");
         return null;
     }
 
@@ -38,6 +44,7 @@ public class ConnectionManager {
      * returns a connection from a user to the pool of available connections
      */
     public void releaseConnection(){
+        logger.info("Releasing Connection");
         basicConnectionPool.releaseConnection(conn);
     }
 
@@ -50,8 +57,10 @@ public class ConnectionManager {
      */
     public void setConnection(String url, String user, String pass){
         try {
-            basicConnectionPool= BasicConnectionPool.create(url, user, pass);
+            logger.info("Creating Connection Pool");
+            basicConnectionPool= ConnectionPool.create(url, user, pass);
         }catch(SQLException e){
+            logger.error("Failed to Create ConnectionPool");
             e.printStackTrace();
         }
     }
