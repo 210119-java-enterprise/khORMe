@@ -1,27 +1,32 @@
-//package com.revature.services;
-//
-//
-//import com.revature.stubs.UserRepositoryStub;
-//import org.junit.After;
-//import org.junit.Assert;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import java.util.Optional;
-//
-//import static org.junit.Assert.*;
-//import static org.mockito.Mockito.*;
-//
-//public class ConnectionManagerTest {
-//
+package com.revature.services;
+
+
+
+import com.revature.util.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+public class ConnectionManagerTest {
+
 //    ConnectionManager sut;
-//    BasicConnectionPool mockConnectionPool = mock(BasicConnectionPool.class);
+//    ConnectionPool mockConnectionPool = mock(ConnectionPool.class);
 //    //AppUser fakeUser = new AppUser();
 //
 //
 //    @Before
 //    public void setUpTest() {
-//        sut = new UserService(mockUserRepo);
+//        sut = ConnectionManager.getInstance();
 //    }
 //
 //    @After
@@ -42,13 +47,21 @@
 //        AppUser nullUser = null;
 //
 //        // Act
-//        boolean actualResult = sut.isUserValid(nullUser);
+//
+//        try(Connection conn = sut.getConnection()){
+//
+//
+//        } catch (SQLException e) {
+//
+//        }
+//        connectionManager.releaseConnection();
+//        boolean actualResult = sut.getConnection();//.isUserValid(nullUser);
 //
 //        // Assert
 //        assertFalse(actualResult);
 //
 //    }
-//
+
 //    @Test
 //    public void test_isUserValid_whenGiven_userWithNullFirstName() {
 //
@@ -95,4 +108,4 @@
 //        verify(mockUserRepo, atMost(1)).findUserByUsernameAndPassword(anyString(), anyString());
 //
 //    }
-//}
+}

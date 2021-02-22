@@ -57,7 +57,7 @@ Logger logger = LogManager.getLogger(QueryBuilder.class);
 
             ColumnField[] fields = table.getColumns().toArray(new ColumnField[0]);
             ResultSetMapper.printResults(rs, fields);
-;
+
 
         } catch (SQLException e) {
             logger.error("Attempt Failed");
@@ -365,7 +365,7 @@ Logger logger = LogManager.getLogger(QueryBuilder.class);
      * @param value
      * @return
      */
-    public boolean updateById(Object obj, String col, String value) {//TODO pstmt
+    public boolean updateById2(Object obj, String col, String value) {//TODO pstmt
         logger.info("Building Query");
             String sql="";
             Metamodel<Class<?>> table=db.getByClassName(obj.getClass().getSimpleName());
@@ -399,6 +399,48 @@ Logger logger = LogManager.getLogger(QueryBuilder.class);
 
 
 
+    /**
+     *
+     * @param obj
+     * @param col
+     * @param value
+     * @return
+     */
+    public boolean updateById(Object obj, String col, String value) {
+        logger.info("Building UPDATE statement");
+        int id=0;
+
+        Metamodel<Class<?>> table=db.getByClassName(obj.getClass().getSimpleName());
+        String tableName=table.getTable().getTableName();
+        String className=obj.getClass().getName();
+        String sql = "update "+table.getTable().getTableName()+"\n" +
+                "set "+col+" = ? \n" +
+                "where id = ?;";
+        try {
+            Class cls=Class.forName(className);
+            id=cls.getDeclaredField("id").getInt(obj);
+
+        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
+            logger.error("Build Failed");
+            e.printStackTrace();
+        }
+
+        try(Connection conn = connectionManager.getConnection()){
+            logger.info("Attempting Query");
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, value);
+            pstmt.setInt(2, id);
+            pstmt.execute();
+            connectionManager.releaseConnection();
+            return true;
+
+        } catch (SQLException e) {
+            logger.error("Attempt Failed");
+            e.printStackTrace();
+        }
+        connectionManager.releaseConnection();
+        return false;
+    }
 
 
 //    public boolean updateById(Object obj, String col, String value) {
