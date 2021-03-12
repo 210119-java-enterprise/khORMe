@@ -29,14 +29,10 @@ khORMe is an annotation based Object-Relational-Mapper in the vein of hibernate.
                 </table>
             </tables>
         </project>
-    ### 4) Initialize khORMe in your main, and point to your config xml file
+   ### 4) Initialize khORMe in your main, and point to your config xml file
         Initializer init = new Initializer();
         init.initialize("src/main/resources/khORM.xml");
     
-
-
-
-
 ## Features:
     Connection pooling
     Create
