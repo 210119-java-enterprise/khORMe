@@ -2,15 +2,15 @@
 
 khORMe is an annotation based Object-Relational-Mapper in the vein of hibernate.
 
-##How To:
-    ###1) Compile and install Khorme to .m2 folder
-    ###2) Add the dependancy to your POM
-         <dependency>
+## How To:
+   ### 1) Compile and install Khorme to .m2 folder
+   ### 2) Add the dependancy to your POM
+        <dependency>
             <groupId>com.revature</groupId>
             <artifactId>khORMe</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-    ###3) Create a configuration XML:     
+   ### 3) Create a configuration XML:     
         <project>
             <db_properties>
                 <url>jdbc:postgresql:[yourdatabase]</url>
@@ -29,7 +29,7 @@ khORMe is an annotation based Object-Relational-Mapper in the vein of hibernate.
                 </table>
             </tables>
         </project>
-    ###4) Initialize khORMe in your main, and point to your config xml file
+    ### 4) Initialize khORMe in your main, and point to your config xml file
         Initializer init = new Initializer();
         init.initialize("src/main/resources/khORM.xml");
     
@@ -37,7 +37,7 @@ khORMe is an annotation based Object-Relational-Mapper in the vein of hibernate.
 
 
 
-##Features:
+## Features:
     Connection pooling
     Create
     Read 
